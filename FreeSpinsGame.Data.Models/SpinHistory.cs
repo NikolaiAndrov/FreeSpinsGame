@@ -22,7 +22,7 @@ namespace FreeSpinsGame.Data.Models
         public virtual Campaign Campaign { get; set; } = null!;
 
         [Required]
-        public Guid PlayerId { get; set; }
+        public string PlayerId { get; set; } = null!;
 
         [ForeignKey(nameof(PlayerId))]
         public virtual Player Player { get; set; } = null!;

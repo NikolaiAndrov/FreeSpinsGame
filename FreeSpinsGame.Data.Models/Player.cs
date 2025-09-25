@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FreeSpinsGame.Data.Models
 {
-    public class Player : IdentityUser<Guid>
+    public class Player : IdentityUser
     {
         public Player()
         {
             this.PlayersCampaigns = new HashSet<PlayerCampaign>();
             this.SpinsHistory = new HashSet<SpinHistory>();
-            this.Id = Guid.NewGuid();
             this.IsActive = true;
         }
 

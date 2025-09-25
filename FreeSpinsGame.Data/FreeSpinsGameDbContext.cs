@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace FreeSpinsGame.Data
 {
-    public class FreeSpinsGameDbContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
+    public class FreeSpinsGameDbContext : IdentityDbContext<Player>
     {
         public FreeSpinsGameDbContext(DbContextOptions<FreeSpinsGameDbContext> options)
             : base(options)
@@ -23,7 +23,9 @@ namespace FreeSpinsGame.Data
         public DbSet<SpinHistory> SpinsHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {
+        {   
+            base.OnModelCreating(builder);
+
             Assembly configAssembly = Assembly.GetAssembly(typeof(FreeSpinsGameDbContext)) ?? Assembly.GetExecutingAssembly();
             builder.ApplyConfigurationsFromAssembly(configAssembly);
         }
