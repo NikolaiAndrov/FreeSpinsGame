@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.Services", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.WebApi.DtoModels", "FreeSpinsGame.WebApi.DtoModels\FreeSpinsGame.WebApi.DtoModels.csproj", "{BFFC53C1-CCC4-4DE3-9333-96CCE528370C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.Mapping", "FreeSpinsGame.Mapping\FreeSpinsGame.Mapping.csproj", "{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{BFFC53C1-CCC4-4DE3-9333-96CCE528370C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFFC53C1-CCC4-4DE3-9333-96CCE528370C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFFC53C1-CCC4-4DE3-9333-96CCE528370C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{06E287EE-5538-437F-AC2A-9F6850FE43C7} = {0ED75FF5-62DE-4CAE-882C-3306D4DED13C}
 		{E66DB075-CBFA-423D-BEDC-8AD5E7D15456} = {E713A44F-84A4-425F-B12A-EB56C13EB100}
 		{BFFC53C1-CCC4-4DE3-9333-96CCE528370C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F} = {E713A44F-84A4-425F-B12A-EB56C13EB100}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {974A44F8-7262-435A-9040-C71D4140A69B}

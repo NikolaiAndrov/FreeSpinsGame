@@ -1,5 +1,6 @@
 using FreeSpinsGame.Data;
 using FreeSpinsGame.Data.Models;
+using FreeSpinsGame.Mapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,11 @@ namespace FreeSpinsGame.WebApi
             builder.Services.AddDbContext<FreeSpinsGameDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddAutoMapper(conf =>
+            {
+                conf.AddProfile<FreeSpinsGameProfile>();
             });
 
             builder.Services.AddIdentity<Player, IdentityRole>(options =>

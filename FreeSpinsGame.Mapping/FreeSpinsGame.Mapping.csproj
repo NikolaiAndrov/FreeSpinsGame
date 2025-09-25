@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <ProjectReference Include="..\FreeSpinsGame.Data.Models\FreeSpinsGame.Data.Models.csproj" />
+    <ProjectReference Include="..\FreeSpinsGame.WebApi.DtoModels\FreeSpinsGame.WebApi.DtoModels.csproj" />
   </ItemGroup>
 
 </Project>
