@@ -10,6 +10,7 @@ namespace FreeSpinsGame.Mapping
         {
             // Source => Target, From => To
             this.CreateMap<RegisterPlayerDto, Player>();
+            this.CreateMap<RegisterPlayerDto, NewPlayerDto>();
         }
     }
 }
