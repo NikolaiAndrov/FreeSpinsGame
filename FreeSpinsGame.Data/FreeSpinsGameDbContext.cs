@@ -1,10 +1,11 @@
 ﻿using FreeSpinsGame.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FreeSpinsGame.Data
 {
-    public class FreeSpinsGameDbContext : IdentityDbContext<Player>
+    public class FreeSpinsGameDbContext : IdentityDbContext<Player, IdentityRole<Guid>, Guid>
     {
         public FreeSpinsGameDbContext(DbContextOptions<FreeSpinsGameDbContext> options)
             : base(options)

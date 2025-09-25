@@ -10,7 +10,7 @@ namespace FreeSpinsGame.Data.Models
         }
 
         [Required]
-        public string PlayerId { get; set; } = null!;
+        public Guid PlayerId { get; set; }
 
         [ForeignKey(nameof(PlayerId))]
         public virtual Player Player { get; set; } = null!;

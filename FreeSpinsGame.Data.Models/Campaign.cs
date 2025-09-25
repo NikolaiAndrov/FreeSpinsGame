@@ -15,7 +15,7 @@ namespace FreeSpinsGame.Data.Models
         [Key]
         public Guid CampaignId { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
