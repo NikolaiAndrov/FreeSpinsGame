@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FreeSpinsGame.Common\FreeSpinsGame.Common.csproj" />
     <ProjectReference Include="..\FreeSpinsGame.Data.Models\FreeSpinsGame.Data.Models.csproj" />
     <ProjectReference Include="..\FreeSpinsGame.Data\FreeSpinsGame.Data.csproj" />
