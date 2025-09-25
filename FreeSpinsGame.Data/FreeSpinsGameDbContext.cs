@@ -11,5 +11,13 @@ namespace FreeSpinsGame.Data
         {
             
         }
+
+        public DbSet<Player> Players { get; set; }
+
+        public DbSet<Campaign> Campaigns { get; set; }
+
+        public DbSet<PlayerCampaign> PlayersCampaigns { get; set; }
+
+        public DbSet<SpinHistory> SpinsHistory { get; set; }
     }
 }
