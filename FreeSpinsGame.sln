@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.36105.23 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.WebApi", "FreeSpinsGame.WebApi\FreeSpinsGame.WebApi.csproj", "{531B9568-063A-4495-834A-D6CE524E0063}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{531B9568-063A-4495-834A-D6CE524E0063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531B9568-063A-4495-834A-D6CE524E0063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531B9568-063A-4495-834A-D6CE524E0063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531B9568-063A-4495-834A-D6CE524E0063}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {974A44F8-7262-435A-9040-C71D4140A69B}
+	EndGlobalSection
+EndGlobal
