@@ -8,7 +8,8 @@ namespace FreeSpinsGame.Data.Models
         public SpinHistory()
         {
             this.SpinHistoryId = Guid.NewGuid();
-            this.DateTime = DateTimeOffset.UtcNow;
+            this.Timestamp = DateTimeOffset.UtcNow;
+            this.IsActive = true;
         }
 
         [Key]
@@ -27,9 +28,12 @@ namespace FreeSpinsGame.Data.Models
         public virtual Player Player { get; set; } = null!;
 
         [Required]
-        public DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
 
         [Required]
         public int SpinCount { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
     }
 }

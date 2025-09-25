@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FreeSpinsGame.Data
 {
@@ -20,5 +21,11 @@ namespace FreeSpinsGame.Data
         public DbSet<PlayerCampaign> PlayersCampaigns { get; set; }
 
         public DbSet<SpinHistory> SpinsHistory { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            Assembly configAssembly = Assembly.GetAssembly(typeof(FreeSpinsGameDbContext)) ?? Assembly.GetExecutingAssembly();
+            builder.ApplyConfigurationsFromAssembly(configAssembly);
+        }
     }
 }

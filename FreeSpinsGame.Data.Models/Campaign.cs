@@ -10,6 +10,7 @@ namespace FreeSpinsGame.Data.Models
             this.CampaignId = Guid.NewGuid();
             this.PlayersCampaigns = new HashSet<PlayerCampaign>();
             this.SpinsHistory = new HashSet<SpinHistory>();
+            this.IsActive = true;
         }
 
         [Key]
