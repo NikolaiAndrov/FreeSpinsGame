@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FreeSpinsGame.Data.Models\FreeSpinsGame.Data.Models.csproj" />
+    <ProjectReference Include="..\FreeSpinsGame.Services\FreeSpinsGame.Services.csproj" />
     <ProjectReference Include="..\FreeSpinsGame.WebApi.DtoModels\FreeSpinsGame.WebApi.DtoModels.csproj" />
   </ItemGroup>
 

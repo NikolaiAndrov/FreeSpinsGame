@@ -3,7 +3,7 @@ using static FreeSpinsGame.Common.EntityValidationConstants.RegisterPlayerDtoVal
 
 namespace FreeSpinsGame.WebApi.DtoModels
 {
-    public class PlayerBaseDto
+    public abstract class PlayerBaseDto
     {
         [Required(AllowEmptyStrings = false)]
         [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]

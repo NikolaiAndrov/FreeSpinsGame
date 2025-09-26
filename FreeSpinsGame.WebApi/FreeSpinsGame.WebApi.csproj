@@ -29,6 +29,7 @@
     <ProjectReference Include="..\FreeSpinsGame.Data.Models\FreeSpinsGame.Data.Models.csproj" />
     <ProjectReference Include="..\FreeSpinsGame.Data\FreeSpinsGame.Data.csproj" />
     <ProjectReference Include="..\FreeSpinsGame.Mapping\FreeSpinsGame.Mapping.csproj" />
+    <ProjectReference Include="..\FreeSpinsGame.Services\FreeSpinsGame.Services.csproj" />
   </ItemGroup>
 
 </Project>

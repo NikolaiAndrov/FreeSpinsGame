@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FreeSpinsGame.Data.Models;
+using FreeSpinsGame.Services.Interfaces;
 using FreeSpinsGame.WebApi.DtoModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,16 @@ namespace FreeSpinsGame.WebApi.Controllers
         private readonly SignInManager<Player> signInManager;
         private readonly IMapper mapper;
         private readonly ILogger<AccountController> logger;
+        private readonly ITokenService tokenService;
 
-        public AccountController(UserManager<Player> userManager, SignInManager<Player> signInManager, IMapper mapper, ILogger<AccountController> logger)
+        public AccountController(UserManager<Player> userManager, SignInManager<Player> signInManager, 
+            IMapper mapper, ILogger<AccountController> logger, ITokenService tokenService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.logger = logger;
+            this.tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -61,7 +65,9 @@ namespace FreeSpinsGame.WebApi.Controllers
                     return this.BadRequest(this.ModelState);
                 }
 
-                PlayerBaseDto newPlayer = this.mapper.Map<PlayerBaseDto>(playerDto);
+                NewPlayerDto newPlayer = this.mapper.Map<NewPlayerDto>(playerDto);
+                newPlayer.Token = this.tokenService.CreateToken(player);
+
                 this.logger.LogInformation(UserRegisteredSuccessfully);
                 return this.Created(string.Empty ,newPlayer);
             }

@@ -1,11 +1,14 @@
 using FreeSpinsGame.Data;
 using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Mapping;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FreeSpinsGame.Services.Interfaces;
+using FreeSpinsGame.Services;
 
 namespace FreeSpinsGame.WebApi
 {
@@ -31,6 +34,8 @@ namespace FreeSpinsGame.WebApi
             {
                 conf.AddProfile<FreeSpinsGameProfile>();
             });
+
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddIdentity<Player, IdentityRole>(options =>
             {
