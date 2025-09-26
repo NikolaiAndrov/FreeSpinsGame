@@ -61,7 +61,7 @@ namespace FreeSpinsGame.WebApi.Controllers
                     return this.BadRequest(this.ModelState);
                 }
 
-                NewPlayerDto newPlayer = this.mapper.Map<NewPlayerDto>(playerDto);
+                PlayerBaseDto newPlayer = this.mapper.Map<PlayerBaseDto>(playerDto);
                 this.logger.LogInformation(UserRegisteredSuccessfully);
                 return this.Created(string.Empty ,newPlayer);
             }
