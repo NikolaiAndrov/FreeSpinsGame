@@ -8,6 +8,7 @@
         public const string InvalidEmailOrPassword = "The email or password not correct.";
 
         public const string PlayerNotFound = "The player with these credentials is not existing.";
+        public const string PlayerNotSubscribed = "You don't have subscription for this campaign.";
         public const string CampaignNotFound = "The campaign is no longer available.";
     }
 }

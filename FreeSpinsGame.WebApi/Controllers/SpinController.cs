@@ -23,6 +23,7 @@ namespace FreeSpinsGame.WebApi.Controllers
         {
             await this.ValidatePlayerAsync(playerId);
             await this.ValidateCampaignAsync(campaignId);
+            await this.ValidatePlayerSubscriptionAsync(playerId, campaignId);
 
             return this.Ok();
         }
@@ -46,6 +47,18 @@ namespace FreeSpinsGame.WebApi.Controllers
             if (!isCampaignExisting)
             {
                 return this.NotFound(CampaignNotFound);
+            }
+
+            return null!;
+        }
+
+        private async Task<IActionResult> ValidatePlayerSubscriptionAsync(string playerId, Guid campaignId)
+        {
+            bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
+
+            if (!isSubscribed)
+            {
+                return this.BadRequest(PlayerNotSubscribed);
             }
 
             return null!;
