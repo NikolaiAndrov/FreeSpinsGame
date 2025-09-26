@@ -6,5 +6,7 @@
         public const string UserRegisteredSuccessfully = "The registration was successful.";
 
         public const string InvalidEmailOrPassword = "The email or password not correct.";
+
+        public const string PlayerNotFound = "The player was not found.";
     }
 }
