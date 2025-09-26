@@ -1,5 +1,4 @@
-﻿using FreeSpinsGame.WebApi.DtoModels;
-using FreeSpinsGame.Services.Interfaces;
+﻿using FreeSpinsGame.Services.Interfaces;
 
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,6 +24,7 @@ namespace FreeSpinsGame.Services
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim(JwtRegisteredClaimNames.Sub, player.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, player.Email!),
                 new Claim(JwtRegisteredClaimNames.GivenName, player.UserName!)
             };

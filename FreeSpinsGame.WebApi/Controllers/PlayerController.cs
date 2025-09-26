@@ -5,6 +5,8 @@ using FreeSpinsGame.WebApi.DtoModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 using static FreeSpinsGame.Common.GeneralApplicationConstants;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
 
