@@ -4,6 +4,7 @@ using FreeSpinsGame.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreeSpinsGame.Data.Migrations
 {
     [DbContext(typeof(FreeSpinsGameDbContext))]
-    partial class FreeSpinsGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926204906_concurrencystamp")]
+    partial class concurrencystamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
