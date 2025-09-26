@@ -35,5 +35,8 @@ namespace FreeSpinsGame.Data.Models
 
         [Required]
         public bool IsActive { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; } = null!;
     }
 }
