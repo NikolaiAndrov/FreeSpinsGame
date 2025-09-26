@@ -3,10 +3,10 @@ using static FreeSpinsGame.Common.EntityValidationConstants.RegisterPlayerDtoVal
 
 namespace FreeSpinsGame.WebApi.DtoModels
 {
-    public class RegisterPlayerDto : PlayerLoginDto
+    public class PlayerLoginDto : PlayerBaseDto
     {
         [Required(AllowEmptyStrings = false)]
-        [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]
-        public string UserName { get; set; } = null!;
+        [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
+        public string Password { get; set; } = null!;
     }
 }
