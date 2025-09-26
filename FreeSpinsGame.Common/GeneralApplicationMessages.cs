@@ -7,6 +7,6 @@
 
         public const string InvalidEmailOrPassword = "The email or password not correct.";
 
-        public const string PlayerNotFound = "The player was not found.";
+        public const string PlayerNotFound = "The player with these credentials is not existing.";
     }
 }

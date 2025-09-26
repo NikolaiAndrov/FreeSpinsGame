@@ -19,11 +19,10 @@ namespace FreeSpinsGame.WebApi.Controllers
         public async Task<IActionResult> Spin(Guid campaignId, string playerId)
         {
             bool isPlayerExisting = await this.playerService.IsPlayerExistingByIdAsync(playerId);
-            bool isPlayerActive = await this.playerService.IsPlayerActiveAsync(playerId);
-           
-            if (!isPlayerExisting || !isPlayerActive)
+
+            if (isPlayerExisting)
             {
-                return this.BadRequest(PlayerNotFound);
+                return this.NotFound(PlayerNotFound);
             }
 
             return this.Ok();
