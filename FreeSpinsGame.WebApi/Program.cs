@@ -38,6 +38,8 @@ namespace FreeSpinsGame.WebApi
 
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();
+            builder.Services.AddScoped<ISpinService, SpinService>();
+            builder.Services.AddScoped<ICampaignService, CampaignService>();
 
             builder.Services.AddIdentity<Player, IdentityRole>(options =>
             {
