@@ -27,6 +27,13 @@ namespace FreeSpinsGame.Services
             return this.mapper.Map<CampaignViewDto>(campaign);
         }
 
+        public async Task DeleteAsync(Guid campaignId)
+        {
+            Campaign campaign = await this.GetCampaignByIdAsync(campaignId);
+            this.dbContext.Remove(campaign);
+            await this.dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<CampaignViewDto>> GetAllAsync(CampaignQueryDto queryModel)
         {
             IQueryable<Campaign> campaignsQuery = this.dbContext.Campaigns

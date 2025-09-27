@@ -36,10 +36,9 @@ namespace FreeSpinsGame.WebApi.Controllers
                 this.logger.LogInformation(GetAllCampaignsSuccessfully);
                 return this.Ok(campaigns);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.logger.LogCritical(GetAllCampaignsCritical);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.HandleException(ex);
             }
         }
 
@@ -60,10 +59,9 @@ namespace FreeSpinsGame.WebApi.Controllers
                 this.logger.LogInformation(OperationCompletedSuccessfully);
                 return this.Ok(campaignViewDto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.logger.LogCritical(UnexpectedErrorMessage);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.HandleException(ex);
             }
         }
 
@@ -81,10 +79,9 @@ namespace FreeSpinsGame.WebApi.Controllers
                 this.logger.LogInformation(OperationCompletedSuccessfully);
                 return CreatedAtAction(nameof(this.GetById), new { id = newCampaign.CampaignId }, newCampaign);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.logger.LogCritical(UnexpectedErrorMessage);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.HandleException(ex);
             }
         }
 
@@ -110,10 +107,38 @@ namespace FreeSpinsGame.WebApi.Controllers
 
                 return this.Ok(campaign);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.HandleException(ex);
             }
+        }
+
+        [HttpDelete("{campaignId:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid campaignId)
+        {
+            try
+            {
+                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+
+                if (!isExisting)
+                {
+                    return this.NotFound();
+                }
+
+                await this.campaignService.DeleteAsync(campaignId);
+                this.logger.LogInformation(OperationCompletedSuccessfully);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        private IActionResult HandleException(Exception ex)
+        {
+            this.logger.LogError(ex, UnexpectedErrorMessage);
+            return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
         }
     }
 }
