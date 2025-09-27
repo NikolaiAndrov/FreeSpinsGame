@@ -6,6 +6,6 @@ namespace FreeSpinsGame.Services.Interfaces
     {
         Task<SpinHistory?> GetSpinHistoryAsync(Guid campaignId, string playerId, DateTimeOffset dateToday);
 
-        SpinHistory CreateSpinHistory(Guid campaignId, string playerId, DateTimeOffset dateToday);
+        Task<SpinHistory> CreateSpinHistoryAsync(Guid campaignId, string playerId, DateTimeOffset dateToday);
     }
 }

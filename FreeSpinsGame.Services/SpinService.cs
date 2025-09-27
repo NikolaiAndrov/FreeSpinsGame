@@ -27,7 +27,7 @@ namespace FreeSpinsGame.Services
 
             if (spinHistory == null)
             {
-                spinHistory = this.spinHistoryService.CreateSpinHistory(campaignId, playerId, dateToday);
+                spinHistory = await this.spinHistoryService.CreateSpinHistoryAsync(campaignId, playerId, dateToday);
             }
 
             SpinStatusDto spinStatus = new SpinStatusDto
@@ -52,12 +52,9 @@ namespace FreeSpinsGame.Services
                 {
                     SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(campaignId, playerId, dateToday);
 
-                    bool isNew = false;
-
                     if (spinHistory == null)
                     {
-                        isNew = true;
-                        spinHistory = this.spinHistoryService.CreateSpinHistory(campaignId, playerId, dateToday);
+                        spinHistory = await this.spinHistoryService.CreateSpinHistoryAsync(campaignId, playerId, dateToday);
                     }
 
                     Campaign campaign = await this.campaignService.GetCampaignByIdAsync(campaignId);
@@ -70,11 +67,6 @@ namespace FreeSpinsGame.Services
                     }
 
                     spinHistory.SpinCount++;
-
-                    if (isNew)
-                    {
-                        await this.dbContext.SpinsHistory.AddAsync(spinHistory);
-                    }
 
                     await this.dbContext.SaveChangesAsync();
 

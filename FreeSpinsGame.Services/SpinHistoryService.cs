@@ -14,7 +14,7 @@ namespace FreeSpinsGame.Services
             this.dbContext = dbContext;
         }
 
-        public SpinHistory CreateSpinHistory(Guid campaignId, string playerId, DateTimeOffset dateToday)
+        public async Task<SpinHistory> CreateSpinHistoryAsync(Guid campaignId, string playerId, DateTimeOffset dateToday)
         {
             SpinHistory spinHistory = new SpinHistory
             {
@@ -24,17 +24,24 @@ namespace FreeSpinsGame.Services
                 SpinCount = 0
             };
 
+            await this.dbContext.SpinsHistory.AddAsync(spinHistory);
+            await this.dbContext.SaveChangesAsync();
+
             return spinHistory;
         }
 
         public async Task<SpinHistory?> GetSpinHistoryAsync(Guid campaignId, string playerId, DateTimeOffset dateToday)
         {
+            var startOfDay = dateToday.Date;
+            var endOfDay = startOfDay.AddDays(1);
+
             SpinHistory? spinHistory = await this.dbContext.SpinsHistory
                 .FirstOrDefaultAsync(sh =>
-                sh.IsActive == true &&
+                sh.IsActive &&
                 sh.CampaignId == campaignId &&
                 sh.PlayerId == playerId &&
-                sh.Timestamp == dateToday);
+                sh.Timestamp >= startOfDay &&
+                sh.Timestamp < endOfDay);
 
             return spinHistory;
         }
