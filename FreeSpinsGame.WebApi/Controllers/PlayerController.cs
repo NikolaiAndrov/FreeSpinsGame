@@ -77,7 +77,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             catch (Exception ex)
             {
                 this.logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }
 

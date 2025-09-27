@@ -2,6 +2,6 @@
 {
     public interface ISpinService
     {
-        Task SpinAsync(Guid campaignId, string playerId);
+        Task<int> SpinAsync(Guid campaignId, string playerId, DateTimeOffset dateToday);
     }
 }

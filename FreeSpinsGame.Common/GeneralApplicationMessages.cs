@@ -10,5 +10,8 @@
         public const string PlayerNotFound = "The player with these credentials is not existing.";
         public const string PlayerNotSubscribed = "You don't have subscription for this campaign.";
         public const string CampaignNotFound = "The campaign is no longer available.";
+        public const string AllSpinsExhausted = "You already have exhausted all of your daily spin attempts.";
+        public const string RemainingSpinsCount = "Your remaining daily spins count";
+        public const string SpinConflict = "Something went wrong with your request, please retry.";
     }
 }

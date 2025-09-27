@@ -1,6 +1,7 @@
 ﻿using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
 
 namespace FreeSpinsGame.WebApi.Controllers
@@ -11,21 +12,40 @@ namespace FreeSpinsGame.WebApi.Controllers
     {
         private readonly IPlayerService playerService;
         private readonly ICampaignService campaignService;
+        private readonly ISpinService spinService;
 
-        public SpinController(IPlayerService playerService, ICampaignService campaignService)
+        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService)
         {
             this.playerService = playerService;
             this.campaignService = campaignService;
+            this.spinService = spinService;
         }
 
         [HttpPost("spin")]
         public async Task<IActionResult> Spin(Guid campaignId, string playerId)
         {
-            await this.ValidatePlayerAsync(playerId);
-            await this.ValidateCampaignAsync(campaignId);
-            await this.ValidatePlayerSubscriptionAsync(playerId, campaignId);
+            try
+            {
+                await this.ValidatePlayerAsync(playerId);
+                await this.ValidateCampaignAsync(campaignId);
+                await this.ValidatePlayerSubscriptionAsync(playerId, campaignId);
+                int remainingSpinCount = await this.spinService.SpinAsync(campaignId, playerId, DateTimeOffset.UtcNow);
 
-            return this.Ok();
+                if (remainingSpinCount < 0)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden, AllSpinsExhausted);
+                }
+
+                return this.Ok($"{RemainingSpinsCount}{remainingSpinCount}");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, SpinConflict);
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
         }
 
         private async Task<IActionResult> ValidatePlayerAsync(string playerId)
