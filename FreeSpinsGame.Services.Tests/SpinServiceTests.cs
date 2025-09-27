@@ -77,7 +77,7 @@ namespace FreeSpinsGame.Services.Tests
         }
 
         [Test]
-        public async Task AfterSpinningSpinCountShouldBeCorrect()
+        public async Task AfterSpinningRemainingSpinCountShouldBeCorrect()
         {
             Campaign campaign = await this.campaignService.GetCampaignByIdAsync(CampaignId);
             int expectedSpinCount = campaign.MaxSpinsPerDay - 1;
@@ -89,6 +89,22 @@ namespace FreeSpinsGame.Services.Tests
             int actualCount = campaign.MaxSpinsPerDay - spinHistory!.SpinCount;
 
             Assert.That(expectedSpinCount, Is.EqualTo(actualCount));
+        }
+
+        [Test]
+        public async Task SpinCountInSpinHistoryShouldBeCorrect()
+        {
+            int expectedSpinsCount = 3;
+
+            for (int i = 0; i < expectedSpinsCount; i++)
+            {
+                await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+            }
+
+            SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+            int actualSpinsCount = spinHistory!.SpinCount;
+
+            Assert.That(expectedSpinsCount, Is.EqualTo(actualSpinsCount));
         }
 
         [TearDown]
