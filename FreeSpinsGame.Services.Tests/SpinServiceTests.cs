@@ -107,6 +107,35 @@ namespace FreeSpinsGame.Services.Tests
             Assert.That(expectedSpinsCount, Is.EqualTo(actualSpinsCount));
         }
 
+        [Test]
+        public async Task DoesNotExceedMaxUnderParallelCalls()
+        {
+            Campaign campaign = await this.campaignService.GetCampaignByIdAsync(CampaignId);
+            int expectedMaxSpinCount = campaign.MaxSpinsPerDay;
+            int attempts = 50;
+            var tasks = new List<Task>();
+
+            for (int i = 0; i < attempts; i++)
+            {
+                tasks.Add(Task.Run(async () =>
+                {
+                    try 
+                    {
+                        await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday); 
+                    }
+                    catch (Exception) 
+                    { 
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+
+            SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+            int actualSpinsCount = spinHistory!.SpinCount;
+            Assert.That(expectedMaxSpinCount, Is.EqualTo(actualSpinsCount));
+        }
+
         [TearDown]
         public async Task TearDown()
         {
