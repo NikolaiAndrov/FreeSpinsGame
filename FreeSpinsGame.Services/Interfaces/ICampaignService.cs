@@ -18,6 +18,8 @@ namespace FreeSpinsGame.Services.Interfaces
 
         Task<CampaignViewDto> GetCampaignViewDtoByIdAsync(Guid campaignId);
 
-        Task<CampaignViewDto> CreateCampaignAsync(CreateCampaignDto createCampaignDto);
+        Task<CampaignViewDto> CreateCampaignAsync(CampaignCreateDto createCampaignDto);
+
+        Task<CampaignViewDto> UpdateCampaignAsync(Guid campaignId, CampaignUpdateDto updateCampaignDto);
     }
 }

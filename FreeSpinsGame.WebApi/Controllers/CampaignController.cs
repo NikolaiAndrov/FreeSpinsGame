@@ -43,20 +43,20 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{campaignId:guid}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid campaignId)
         {
             try
             {
-                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(id);
+                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
 
                 if (!isExisting)
                 {
                     return this.NotFound();
                 }
 
-                CampaignViewDto campaignViewDto = await this.campaignService.GetCampaignViewDtoByIdAsync(id);
+                CampaignViewDto campaignViewDto = await this.campaignService.GetCampaignViewDtoByIdAsync(campaignId);
                 this.logger.LogInformation(OperationCompletedSuccessfully);
                 return this.Ok(campaignViewDto);
             }
@@ -68,7 +68,7 @@ namespace FreeSpinsGame.WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] CreateCampaignDto createCampaignDto)
+        public async Task<IActionResult> Create([FromBody] CampaignCreateDto createCampaignDto)
         {
             if (!this.ModelState.IsValid)
             {
@@ -84,6 +84,34 @@ namespace FreeSpinsGame.WebApi.Controllers
             catch (Exception)
             {
                 this.logger.LogCritical(UnexpectedErrorMessage);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
+        }
+
+        [HttpPut("{campaignId:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid campaignId, [FromBody] CampaignUpdateDto campaignUpdateDto)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            try
+            {
+                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+
+                if (!isExisting)
+                {
+                    return this.NotFound();
+                }
+
+                CampaignViewDto campaign = await this.campaignService.UpdateCampaignAsync(campaignId, campaignUpdateDto);
+                this.logger.LogInformation(OperationCompletedSuccessfully);
+
+                return this.Ok(campaign);
+            }
+            catch (Exception)
+            {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }

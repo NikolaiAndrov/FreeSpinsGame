@@ -19,7 +19,7 @@ namespace FreeSpinsGame.Services
             this.mapper = mapper;
         }
 
-        public async Task<CampaignViewDto> CreateCampaignAsync(CreateCampaignDto createCampaignDto)
+        public async Task<CampaignViewDto> CreateCampaignAsync(CampaignCreateDto createCampaignDto)
         {
             Campaign campaign = this.mapper.Map<Campaign>(createCampaignDto);
             await this.dbContext.AddAsync(campaign);
@@ -68,5 +68,15 @@ namespace FreeSpinsGame.Services
 
         public async Task<bool> IsCampaignExistingByIdAsync(Guid campaignId)
             => await this.dbContext.Campaigns.AnyAsync(c => c.CampaignId == campaignId && c.IsActive == true);
+
+        public async Task<CampaignViewDto> UpdateCampaignAsync(Guid campaignId, CampaignUpdateDto updateCampaignDto)
+        {
+            Campaign campaign = await this.GetCampaignByIdAsync(campaignId);
+            this.mapper.Map(updateCampaignDto, campaign);
+            await this.dbContext.SaveChangesAsync();
+
+            CampaignViewDto campaignViewDto = this.mapper.Map<CampaignViewDto>(campaign);
+            return campaignViewDto;
+        }
     }
 }

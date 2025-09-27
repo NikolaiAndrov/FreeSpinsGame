@@ -3,7 +3,7 @@ using static FreeSpinsGame.Common.EntityValidationConstants.CampaignValidation;
 
 namespace FreeSpinsGame.WebApi.DtoModels.Campaign
 {
-    public class CreateCampaignDto
+    public class CampaignCreateDto
     {
         [Required(AllowEmptyStrings = false)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
