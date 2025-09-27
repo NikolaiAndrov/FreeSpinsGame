@@ -15,5 +15,7 @@ namespace FreeSpinsGame.Services.Interfaces
         Task<Campaign> GetCampaignByIdAsync(Guid campaignId);
 
         Task<IEnumerable<CampaignViewDto>> GetAllAsync(CampaignQueryDto queryModel);
+
+        Task<CampaignViewDto> GetCampaignViewDtoByIdAsync(Guid campaignId);
     }
 }

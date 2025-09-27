@@ -42,5 +42,28 @@ namespace FreeSpinsGame.WebApi.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }
+
+        [HttpGet("{id:guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        {
+            try
+            {
+                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(id);
+
+                if (!isExisting)
+                {
+                    return this.NotFound();
+                }
+
+                CampaignViewDto campaignViewDto = await this.campaignService.GetCampaignViewDtoByIdAsync(id);
+                this.logger.LogInformation(OperationCompletedSuccessfully);
+                return this.Ok(campaignViewDto);
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
+        }
     }
 }

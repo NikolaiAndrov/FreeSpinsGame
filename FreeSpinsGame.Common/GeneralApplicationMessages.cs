@@ -3,14 +3,15 @@
     public static class GeneralApplicationMessages
     {
         // Log Messages
-        public const string SuccessfulSpin = "Successfuly spined.";
+        public const string SuccessfulSpin = "Successfully spined.";
         public const string ConcurrencyConflict = "Concurrency conflict occurred.";
-        public const string StatusProvidedSuccessfuly = "Status provided successfuly.";
+        public const string StatusProvidedSuccessfully = "Status provided successfully.";
         public const string GetAllCampaignsSuccessfully = "All campaigns provided with success.";
         public const string GetAllCampaignsCritical = "While attempting to get all campaigns an error occurred.";
 
         public const string UnexpectedErrorMessage = "Unexpected error occurred, please try later or contact administrator.";
         public const string UserRegisteredSuccessfully = "The registration was successful.";
+        public const string OperationCompletedSuccessfully = "Operation completed successfully.";
 
         public const string InvalidEmailOrPassword = "The email or password not correct.";
 

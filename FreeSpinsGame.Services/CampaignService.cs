@@ -51,6 +51,13 @@ namespace FreeSpinsGame.Services
         public async Task<Campaign> GetCampaignByIdAsync(Guid campaignId)
             => await this.dbContext.Campaigns.FirstAsync(c => c.CampaignId == campaignId);
 
+        public async Task<CampaignViewDto> GetCampaignViewDtoByIdAsync(Guid campaignId)
+        {
+            Campaign campaign = await this.GetCampaignByIdAsync(campaignId);
+            CampaignViewDto campaignViewDto = this.mapper.Map<CampaignViewDto>(campaign);
+            return campaignViewDto;
+        }
+
         public async Task<bool> IsCampaignExistingByIdAsync(Guid campaignId)
             => await this.dbContext.Campaigns.AnyAsync(c => c.CampaignId == campaignId && c.IsActive == true);
     }

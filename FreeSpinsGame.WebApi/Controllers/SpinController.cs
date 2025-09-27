@@ -66,7 +66,7 @@ namespace FreeSpinsGame.WebApi.Controllers
                 await this.ValidatePlayerSubscriptionAsync(playerId, campaignId);
 
                 SpinStatusDto spinStatusDto = await this.spinService.GetSpinStatusAsync(campaignId, playerId, DateTimeOffset.UtcNow);
-                this.logger.LogInformation(StatusProvidedSuccessfuly);
+                this.logger.LogInformation(StatusProvidedSuccessfully);
 
                 return this.Ok(spinStatusDto);
             }
