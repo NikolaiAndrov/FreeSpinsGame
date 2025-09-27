@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.36105.23 d17.13
+VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.WebApi", "FreeSpinsGame.WebApi\FreeSpinsGame.WebApi.csproj", "{531B9568-063A-4495-834A-D6CE524E0063}"
 EndProject
@@ -24,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.WebApi.DtoModels", "FreeSpinsGame.WebApi.DtoModels\FreeSpinsGame.WebApi.DtoModels.csproj", "{BFFC53C1-CCC4-4DE3-9333-96CCE528370C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.Mapping", "FreeSpinsGame.Mapping\FreeSpinsGame.Mapping.csproj", "{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DB1A13E5-0F34-407A-A8DA-7AC6DED04B21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeSpinsGame.Services.Tests", "FreeSpinsGame.Services.Tests\FreeSpinsGame.Services.Tests.csproj", "{80B225D8-0A24-43F2-98F4-1AE644F1CDB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,10 @@ Global
 		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B225D8-0A24-43F2-98F4-1AE644F1CDB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B225D8-0A24-43F2-98F4-1AE644F1CDB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B225D8-0A24-43F2-98F4-1AE644F1CDB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B225D8-0A24-43F2-98F4-1AE644F1CDB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +79,7 @@ Global
 		{E66DB075-CBFA-423D-BEDC-8AD5E7D15456} = {E713A44F-84A4-425F-B12A-EB56C13EB100}
 		{BFFC53C1-CCC4-4DE3-9333-96CCE528370C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1D0E41A1-AEDE-4C2F-AF2B-B3F6B2F3042F} = {E713A44F-84A4-425F-B12A-EB56C13EB100}
+		{80B225D8-0A24-43F2-98F4-1AE644F1CDB4} = {DB1A13E5-0F34-407A-A8DA-7AC6DED04B21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {974A44F8-7262-435A-9040-C71D4140A69B}
