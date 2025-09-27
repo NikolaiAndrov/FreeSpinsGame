@@ -1,17 +1,51 @@
 ﻿using FreeSpinsGame.Data;
 using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Services.Interfaces;
+using FreeSpinsGame.WebApi.DtoModels.Campaign;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace FreeSpinsGame.Services
 {
     public class CampaignService : ICampaignService
     {
         private readonly FreeSpinsGameDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public CampaignService(FreeSpinsGameDbContext dbContext)
+        public CampaignService(FreeSpinsGameDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
+        }
+
+        public async Task<IEnumerable<CampaignViewDto>> GetAllAsync(CampaignQueryDto queryModel)
+        {
+            IQueryable<Campaign> campaignsQuery = this.dbContext.Campaigns
+                .AsNoTracking()
+                .AsQueryable();
+
+            campaignsQuery = campaignsQuery
+                .Where(c => c.IsActive);
+
+            if (queryModel.OrderBySpinsAscending)
+            {
+                campaignsQuery = campaignsQuery
+                    .OrderBy(c => c.MaxSpinsPerDay);
+            }
+            else
+            {
+                campaignsQuery = campaignsQuery
+                    .OrderByDescending(c => c.MaxSpinsPerDay);
+            }
+
+            IEnumerable<CampaignViewDto> campaigns = await campaignsQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.ItemsPerPage)
+                .Take(queryModel.ItemsPerPage)
+                .ProjectTo<CampaignViewDto>(this.mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return campaigns;
         }
 
         public async Task<Campaign> GetCampaignByIdAsync(Guid campaignId)

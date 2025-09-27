@@ -1,4 +1,5 @@
 ﻿using FreeSpinsGame.Data.Models;
+using FreeSpinsGame.WebApi.DtoModels.Campaign;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace FreeSpinsGame.Services.Interfaces
         Task<bool> IsCampaignExistingByIdAsync(Guid campaignId);
 
         Task<Campaign> GetCampaignByIdAsync(Guid campaignId);
+
+        Task<IEnumerable<CampaignViewDto>> GetAllAsync(CampaignQueryDto queryModel);
     }
 }

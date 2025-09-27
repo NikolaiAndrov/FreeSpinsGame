@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FreeSpinsGame.Data.Models;
+using FreeSpinsGame.WebApi.DtoModels.Campaign;
 using FreeSpinsGame.WebApi.DtoModels.Player;
 
 namespace FreeSpinsGame.Mapping
@@ -11,6 +12,8 @@ namespace FreeSpinsGame.Mapping
             // Source => Target, From => To
             this.CreateMap<RegisterPlayerDto, Player>();
             this.CreateMap<Player, NewPlayerDto>();
+
+            this.CreateMap<Campaign, CampaignViewDto>();
         }
     }
 }

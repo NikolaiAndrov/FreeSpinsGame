@@ -15,5 +15,14 @@
             public const int PasswordMinLength = 3;
             public const int PasswordMaxLength = 50;
         }
+
+        public static class CampaignQueryModelValidation
+        {
+            public const int MinItemsPerPage = 1;
+            public const int MaxItemsPerPage = 50;
+
+            public const int CurrentPageMinValue = 1;
+            public const int CurrentPageMaxValue = 1000;
+        }
     }
 }
