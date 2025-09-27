@@ -8,15 +8,15 @@ using static FreeSpinsGame.Common.GeneralApplicationMessages;
 namespace FreeSpinsGame.WebApi.Controllers
 {
     [ApiController]
-    [Route("campaigns/{campaignId}/players/{playerId}")]
+    [Route("api/[controller]")]
     public class SpinController : Controller
     {
         private readonly IPlayerService playerService;
         private readonly ICampaignService campaignService;
         private readonly ISpinService spinService;
-        private readonly ILogger logger;
+        private readonly ILogger<SpinController> logger;
 
-        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService, ILogger logger)
+        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService, ILogger<SpinController> logger)
         {
             this.playerService = playerService;
             this.campaignService = campaignService;
@@ -41,7 +41,7 @@ namespace FreeSpinsGame.WebApi.Controllers
 
                 this.logger.LogInformation(SuccessfulSpin);
 
-                return this.Ok($"{RemainingSpinsCount}{remainingSpinCount}");
+                return this.Ok($"{RemainingSpinsCount} {remainingSpinCount}");
             }
             catch (DbUpdateConcurrencyException)
             {
