@@ -19,6 +19,14 @@ namespace FreeSpinsGame.Services
             this.mapper = mapper;
         }
 
+        public async Task<CampaignViewDto> CreateCampaignAsync(CreateCampaignDto createCampaignDto)
+        {
+            Campaign campaign = this.mapper.Map<Campaign>(createCampaignDto);
+            await this.dbContext.AddAsync(campaign);
+            await this.dbContext.SaveChangesAsync();
+            return this.mapper.Map<CampaignViewDto>(campaign);
+        }
+
         public async Task<IEnumerable<CampaignViewDto>> GetAllAsync(CampaignQueryDto queryModel)
         {
             IQueryable<Campaign> campaignsQuery = this.dbContext.Campaigns

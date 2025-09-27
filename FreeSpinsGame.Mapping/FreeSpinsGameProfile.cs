@@ -14,6 +14,7 @@ namespace FreeSpinsGame.Mapping
             this.CreateMap<Player, NewPlayerDto>();
 
             this.CreateMap<Campaign, CampaignViewDto>();
+            this.CreateMap<CreateCampaignDto, Campaign>();
         }
     }
 }

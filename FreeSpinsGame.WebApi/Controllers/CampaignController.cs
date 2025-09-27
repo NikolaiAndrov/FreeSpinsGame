@@ -27,13 +27,13 @@ namespace FreeSpinsGame.WebApi.Controllers
             try
             {
                 IEnumerable<CampaignViewDto> campaigns = await this.campaignService.GetAllAsync(campaignQueryModel);
-                this.logger.LogInformation(GetAllCampaignsSuccessfully);
 
                 if (!campaigns.Any())
                 {
                     return this.NoContent();
                 }
 
+                this.logger.LogInformation(GetAllCampaignsSuccessfully);
                 return this.Ok(campaigns);
             }
             catch (Exception)
@@ -62,6 +62,28 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
             catch (Exception)
             {
+                this.logger.LogCritical(UnexpectedErrorMessage);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CreateCampaignDto createCampaignDto)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            try
+            {
+                CampaignViewDto newCampaign = await this.campaignService.CreateCampaignAsync(createCampaignDto);
+                this.logger.LogInformation(OperationCompletedSuccessfully);
+                return CreatedAtAction(nameof(this.GetById), new { id = newCampaign.CampaignId }, newCampaign);
+            }
+            catch (Exception)
+            {
+                this.logger.LogCritical(UnexpectedErrorMessage);
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }

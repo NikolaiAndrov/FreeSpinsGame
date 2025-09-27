@@ -4,7 +4,11 @@
     {
         public static class CampaignValidation
         {
+            public const int NameMinLength = 2;
             public const int NameMaxLength = 50;
+
+            public const int SpinsPerDayMinValue = 1;
+            public const int SpinsPerDayMaxValue = 1000;
         }
 
         public static class RegisterPlayerDtoValidation
