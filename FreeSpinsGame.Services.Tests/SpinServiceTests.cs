@@ -60,7 +60,7 @@ namespace FreeSpinsGame.Services.Tests
         }
 
         [Test]
-        public async Task AfterExceedingAllSpinsShouldReturnMinuOneForbidden()
+        public async Task AfterExceedingAllSpinsShouldReturnMinusOneForbidden()
         {
             Campaign campaign = await this.campaignService.GetCampaignByIdAsync(CampaignId);
             int expectedMaxSpinCount = campaign.MaxSpinsPerDay;
@@ -74,6 +74,24 @@ namespace FreeSpinsGame.Services.Tests
             int actualResult = await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday);
 
             Assert.That(expectedResult, Is.EqualTo(actualResult));
+        }
+
+        [Test]
+        public async Task AfterSpinningSpinCountShouldBeCorrect()
+        {
+            Campaign campaign = await this.campaignService.GetCampaignByIdAsync(CampaignId);
+            int expectedSpinCount = campaign.MaxSpinsPerDay - 1;
+
+            for (int i = 0; i < 1; i++)
+            {
+                await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+            }
+
+            SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+
+            int actualCount = campaign.MaxSpinsPerDay - spinHistory!.SpinCount;
+
+            Assert.That(expectedSpinCount, Is.EqualTo(actualCount));
         }
 
         [TearDown]
