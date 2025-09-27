@@ -82,11 +82,8 @@ namespace FreeSpinsGame.Services.Tests
             Campaign campaign = await this.campaignService.GetCampaignByIdAsync(CampaignId);
             int expectedSpinCount = campaign.MaxSpinsPerDay - 1;
 
-            for (int i = 0; i < 1; i++)
-            {
-                await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday);
-            }
-
+            await this.spinService.SpinAsync(CampaignId, PlayerId, DateTimeOffsetToday);
+            
             SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(CampaignId, PlayerId, DateTimeOffsetToday);
 
             int actualCount = campaign.MaxSpinsPerDay - spinHistory!.SpinCount;
