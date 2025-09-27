@@ -1,5 +1,6 @@
 ﻿using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Services.Interfaces;
+using FreeSpinsGame.WebApi.DtoModels.Spin;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
@@ -13,15 +14,17 @@ namespace FreeSpinsGame.WebApi.Controllers
         private readonly IPlayerService playerService;
         private readonly ICampaignService campaignService;
         private readonly ISpinService spinService;
+        private readonly ILogger logger;
 
-        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService)
+        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService, ILogger logger)
         {
             this.playerService = playerService;
             this.campaignService = campaignService;
             this.spinService = spinService;
+            this.logger = logger;
         }
 
-        [HttpPost("spin")]
+        [HttpPost("campaigns/{campaignId}/players/{playerId}/spin")]
         public async Task<IActionResult> Spin(Guid campaignId, string playerId)
         {
             try
@@ -36,14 +39,40 @@ namespace FreeSpinsGame.WebApi.Controllers
                     return this.StatusCode(StatusCodes.Status403Forbidden, AllSpinsExhausted);
                 }
 
+                this.logger.LogInformation(SuccessfulSpin);
+
                 return this.Ok($"{RemainingSpinsCount}{remainingSpinCount}");
             }
             catch (DbUpdateConcurrencyException)
             {
-                return StatusCode(StatusCodes.Status409Conflict, SpinConflict);
+                this.logger.LogCritical(ConcurrencyConflict);
+
+                return this.StatusCode(StatusCodes.Status409Conflict, SpinConflict);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.logger.LogCritical(ex.Message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
+        }
+
+        [HttpGet("campaigns/{campaignId}/players/{playerId}")]
+        public async Task<IActionResult> Status(Guid campaignId, string playerId)
+        {
+            try
+            {
+                await this.ValidatePlayerAsync(playerId);
+                await this.ValidateCampaignAsync(campaignId);
+                await this.ValidatePlayerSubscriptionAsync(playerId, campaignId);
+
+                SpinStatusDto spinStatusDto = await this.spinService.GetSpinStatusAsync(campaignId, playerId, DateTimeOffset.UtcNow);
+                this.logger.LogInformation(StatusProvidedSuccessfuly);
+
+                return this.Ok(spinStatusDto);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical(ex.Message);
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }

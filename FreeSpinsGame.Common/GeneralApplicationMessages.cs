@@ -2,6 +2,11 @@
 {
     public static class GeneralApplicationMessages
     {
+        // Log Messages
+        public const string SuccessfulSpin = "Successfuly spined.";
+        public const string ConcurrencyConflict = "Concurrency conflict occurred.";
+        public const string StatusProvidedSuccessfuly = "Status provided successfuly.";
+
         public const string UnexpectedErrorMessage = "Unexpected error occurred, please try later or contact administrator.";
         public const string UserRegisteredSuccessfully = "The registration was successful.";
 

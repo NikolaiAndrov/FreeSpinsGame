@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FreeSpinsGame.WebApi.DtoModels
+namespace FreeSpinsGame.WebApi.DtoModels.Player
 {
     public abstract class PlayerBaseDto
     {

@@ -1,6 +1,7 @@
 ﻿using FreeSpinsGame.Data;
 using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Services.Interfaces;
+using FreeSpinsGame.WebApi.DtoModels.Spin;
 using Microsoft.EntityFrameworkCore;
 
 namespace FreeSpinsGame.Services
@@ -8,10 +9,34 @@ namespace FreeSpinsGame.Services
     public class SpinService : ISpinService
     {
         private readonly FreeSpinsGameDbContext dbContext;
-
-        public SpinService(FreeSpinsGameDbContext dbContext)
+        private readonly ISpinHistoryService spinHistoryService;
+        private readonly ICampaignService campaignService;
+         
+        public SpinService(FreeSpinsGameDbContext dbContext, ISpinHistoryService spinHistoryService, ICampaignService campaignService)
         {
             this.dbContext = dbContext;
+            this.spinHistoryService = spinHistoryService;
+            this.campaignService = campaignService;
+        }
+
+        public async Task<SpinStatusDto> GetSpinStatusAsync(Guid campaignId, string playerId, DateTimeOffset dateToday)
+        {
+            Campaign campaign = await this.campaignService.GetCampaignByIdAsync(campaignId);
+
+            SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(campaignId, playerId, dateToday);
+
+            if (spinHistory == null)
+            {
+                spinHistory = this.spinHistoryService.CreateSpinHistory(campaignId, playerId, dateToday);
+            }
+
+            SpinStatusDto spinStatus = new SpinStatusDto
+            {
+                CurrentSpinUsage = spinHistory.SpinCount,
+                MaxAllowedSpins = campaign.MaxSpinsPerDay
+            };
+
+            return spinStatus;
         }
 
         public async Task<int> SpinAsync(Guid campaignId, string playerId, DateTimeOffset dateToday)
@@ -25,31 +50,19 @@ namespace FreeSpinsGame.Services
 
                 try
                 {
-                    var spinHistory = await this.dbContext.SpinsHistory
-                        .FirstOrDefaultAsync(sh =>
-                        sh.IsActive == true &&
-                        sh.CampaignId == campaignId &&
-                        sh.PlayerId == playerId &&
-                        sh.Timestamp == dateToday);
+                    SpinHistory? spinHistory = await this.spinHistoryService.GetSpinHistoryAsync(campaignId, playerId, dateToday);
 
                     bool isNew = false;
 
                     if (spinHistory == null)
                     {
                         isNew = true;
-                        spinHistory = new SpinHistory
-                        {
-                            PlayerId = playerId,
-                            CampaignId = campaignId,
-                            Timestamp = dateToday,
-                            SpinCount = 0
-                        };
+                        spinHistory = this.spinHistoryService.CreateSpinHistory(campaignId, playerId, dateToday);
                     }
 
-                    int maxSpinCount = await this.dbContext.Campaigns
-                        .Where(c => c.CampaignId == campaignId)
-                        .Select(c => c.MaxSpinsPerDay)
-                        .FirstAsync();
+                    Campaign campaign = await this.campaignService.GetCampaignByIdAsync(campaignId);
+
+                    int maxSpinCount = campaign.MaxSpinsPerDay;
 
                     if (spinHistory.SpinCount >= maxSpinCount)
                     {

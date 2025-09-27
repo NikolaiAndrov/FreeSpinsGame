@@ -40,6 +40,7 @@ namespace FreeSpinsGame.WebApi
             builder.Services.AddScoped<IPlayerService, PlayerService>();
             builder.Services.AddScoped<ISpinService, SpinService>();
             builder.Services.AddScoped<ICampaignService, CampaignService>();
+            builder.Services.AddScoped<ISpinHistoryService, SpinHistoryService>();
 
             builder.Services.AddIdentity<Player, IdentityRole>(options =>
             {

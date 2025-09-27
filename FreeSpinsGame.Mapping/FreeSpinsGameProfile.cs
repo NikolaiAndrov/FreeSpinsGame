@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FreeSpinsGame.Data.Models;
-using FreeSpinsGame.WebApi.DtoModels;
+using FreeSpinsGame.WebApi.DtoModels.Player;
 
 namespace FreeSpinsGame.Mapping
 {

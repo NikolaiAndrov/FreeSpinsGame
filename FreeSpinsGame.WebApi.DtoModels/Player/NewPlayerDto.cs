@@ -1,4 +1,4 @@
-﻿namespace FreeSpinsGame.WebApi.DtoModels
+﻿namespace FreeSpinsGame.WebApi.DtoModels.Player
 {
     public class NewPlayerDto : PlayerBaseDto
     {
