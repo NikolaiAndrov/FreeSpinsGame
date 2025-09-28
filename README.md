@@ -12,6 +12,9 @@ Technology Stack Section
 ASP.NET Core Web API - For building the API
 Entity Framework Core - For data access and ORM
 SQL Server - The database
+NUnit and InMemory database - For unit testing
+AutoMapper - For entity mapping
+JWT - For authentication and authorization
 
 Getting Started
 
