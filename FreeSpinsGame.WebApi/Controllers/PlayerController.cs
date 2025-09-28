@@ -82,7 +82,7 @@ namespace FreeSpinsGame.WebApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] PlayerLoginDto playerLoginDto) 
+        public async Task<IActionResult> Login([FromBody] LoginPlayerDto playerLoginDto) 
         {
             try
             {

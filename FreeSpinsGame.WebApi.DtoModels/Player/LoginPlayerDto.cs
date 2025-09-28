@@ -3,8 +3,12 @@ using static FreeSpinsGame.Common.EntityValidationConstants.RegisterPlayerDtoVal
 
 namespace FreeSpinsGame.WebApi.DtoModels.Player
 {
-    public class PlayerLoginDto : PlayerBaseDto
+    public class LoginPlayerDto
     {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = null!;
+
         [Required(AllowEmptyStrings = false)]
         [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
         public string Password { get; set; } = null!;
