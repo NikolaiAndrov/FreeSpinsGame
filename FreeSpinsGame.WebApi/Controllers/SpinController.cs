@@ -2,6 +2,7 @@
 using FreeSpinsGame.Services.Interfaces;
 using FreeSpinsGame.WebApi.DtoModels.Spin;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
 
@@ -43,15 +44,25 @@ namespace FreeSpinsGame.WebApi.Controllers
 
                 return this.Ok($"{RemainingSpinsCount} {remainingSpinCount}");
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ArgumentException ex)
             {
-                this.logger.LogCritical(ConcurrencyConflict);
+                this.logger.LogError(ex, ex.Message);
+                return this.BadRequest();
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.logger.LogError(ex, ex.Message);
+                return this.BadRequest();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                this.logger.LogError(ex, ConcurrencyConflict);
 
                 return this.StatusCode(StatusCodes.Status409Conflict, SpinConflict);
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical(ex.Message);
+                this.logger.LogError(ex, UnexpectedErrorMessage);
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }
@@ -70,47 +81,51 @@ namespace FreeSpinsGame.WebApi.Controllers
 
                 return this.Ok(spinStatusDto);
             }
+            catch (ArgumentException ex) 
+            {
+                this.logger.LogError(ex, ex.Message);
+                return this.BadRequest();
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.logger.LogError(ex, ex.Message);
+                return this.BadRequest();
+            }
             catch (Exception ex)
             {
-                this.logger.LogCritical(ex.Message);
+                this.logger.LogError(ex, UnexpectedErrorMessage);
                 return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
             }
         }
 
-        private async Task<IActionResult> ValidatePlayerAsync(string playerId)
+        private async Task ValidatePlayerAsync(string playerId)
         {
             bool isPlayerExisting = await this.playerService.IsPlayerExistingByIdAsync(playerId);
 
             if (!isPlayerExisting)
             {
-                return this.NotFound(PlayerNotFound);
+                throw new ArgumentException(PlayerNotFound);
             }
-
-            return null!;
         }
 
-        private async Task<IActionResult> ValidateCampaignAsync(Guid campaignId)
+        private async Task ValidateCampaignAsync(Guid campaignId)
         {
             bool isCampaignExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
 
             if (!isCampaignExisting)
             {
-                return this.NotFound(CampaignNotFound);
+                throw new ArgumentException(CampaignNotFound);
             }
-
-            return null!;
         }
 
-        private async Task<IActionResult> ValidatePlayerSubscriptionAsync(string playerId, Guid campaignId)
+        private async Task ValidatePlayerSubscriptionAsync(string playerId, Guid campaignId)
         {
             bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
 
             if (!isSubscribed)
             {
-                return this.BadRequest(PlayerNotSubscribed);
+                throw new InvalidOperationException(PlayerNotSubscribed);
             }
-
-            return null!;
         }
     }
 }
