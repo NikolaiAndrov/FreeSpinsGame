@@ -74,7 +74,10 @@ namespace FreeSpinsGame.Services
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (attempt >= maxRetries) throw;
+                    if (attempt >= maxRetries)
+                    {
+                        throw;
+                    }
                 }
             }
 

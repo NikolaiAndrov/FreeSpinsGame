@@ -1,8 +1,11 @@
+using AutoMapper;
 using FreeSpinsGame.Data;
 using FreeSpinsGame.Data.Migrations;
 using FreeSpinsGame.Data.Models;
+using FreeSpinsGame.Mapping;
 using FreeSpinsGame.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using static FreeSpinsGame.Services.Tests.InMemoryDatabaseSeeder;
 
@@ -16,6 +19,7 @@ namespace FreeSpinsGame.Services.Tests
         private ISpinService spinService;
         private ISpinHistoryService spinHistoryService;
         private ICampaignService campaignService;
+        private IMapper mapper;
 
         private string PlayerId = "151d64a8-7378-4ee9-8916-996f2aa45d01";
         private Guid CampaignId = Guid.Parse("651d64a8-7378-4ee9-8916-776f2aa45d01");
@@ -36,8 +40,29 @@ namespace FreeSpinsGame.Services.Tests
             this.dbContext = new FreeSpinsGameDbContext(this.options);
             await this.dbContext.Database.EnsureCreatedAsync();
             Seed(this.dbContext);
+
+
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            {
+                // 1. Add the Console logging provider (so logs appear in the console)
+                builder.AddConsole();
+
+                // 2. Set the minimum log level for ALL categories (optional)
+                builder.SetMinimumLevel(LogLevel.Debug);
+
+                // 3. You can also add specific filters (optional)
+                builder.AddFilter("Microsoft", LogLevel.Warning); // Suppress verbose Microsoft logs
+            });
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<FreeSpinsGameProfile>();
+            }, loggerFactory);
+
+            this.mapper = config.CreateMapper();
+
             this.spinHistoryService = new SpinHistoryService(this.dbContext);
-            this.campaignService = new CampaignService(dbContext);
+            this.campaignService = new CampaignService(this.dbContext, this.mapper);
             this.spinService = new SpinService(this.dbContext, this.spinHistoryService, this.campaignService);
         }
 
