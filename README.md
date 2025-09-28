@@ -65,8 +65,8 @@ Automatically check for missing packages during build in Visual Studio.
 }
 ```
 
-3. Apply migrations.
-4. Run the API.
-5. Swagger UI should open automatically in the browser.
-6. Database is seeded with a bit of data.
-7. Test functionality:  CampaignId = 651d64a8-7378-4ee9-8916-776f2aa45d01, PlayerId = 151d64a8-7378-4ee9-8916-996f2aa45d01
+5. Apply migrations.
+6. Run the API.
+7. Swagger UI should open automatically in the browser.
+8. Database is seeded with a bit of data.
+9. Test functionality:  CampaignId = 651d64a8-7378-4ee9-8916-776f2aa45d01, PlayerId = 151d64a8-7378-4ee9-8916-996f2aa45d01
