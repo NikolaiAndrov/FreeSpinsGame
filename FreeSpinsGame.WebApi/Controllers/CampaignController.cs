@@ -147,24 +147,33 @@ namespace FreeSpinsGame.WebApi.Controllers
 
                 if (!isExisting)
                 {
+                    this.logger.LogInformation($"{CampaignNotFound} id {campaignId}");
                     return this.NotFound(CampaignNotFound);
                 }
 
                 string? playerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+                if (playerId == null)
+                {
+                    return this.BadRequest();
+                }
+
                 bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
 
                 if (isSubscribed)
                 {
+                    this.logger.LogInformation($"{PlayerAlreadySubscribed} {campaignId}");
                     return this.Ok(PlayerAlreadySubscribed);
                 }
 
                 await this.campaignService.SubscribeAsync(campaignId, playerId);
 
+                this.logger.LogInformation($"{SuccessfulSubscription} player id {playerId}, campaign id {campaignId}");
                 return this.Ok(SuccessfulSubscription);
             }
             catch (Exception ex)
             {
+                this.logger.LogError(ex, UnexpectedErrorMessage);
                 return this.HandleException(ex);
             }
         }
