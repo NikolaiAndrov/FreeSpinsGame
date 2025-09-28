@@ -71,9 +71,25 @@ Automatically check for missing packages during build in Visual Studio.
 9. Test functionality:  CampaignId = 651d64a8-7378-4ee9-8916-776f2aa45d01, PlayerId = 151d64a8-7378-4ee9-8916-996f2aa45d01
 
 ## API Endpoints
-
+SpinController
 | Method   | Path                                              | Description                                         |
 | -------- | ------------------------------------------------- | --------------------------------------------------- |
 | **POST** | `/campaigns/{campaignId}/players/{playerId}/spin` | Execute a spin action for a player in a campaign    |
 | **GET**  | `/campaigns/{campaignId}/players/{playerId}`      | Get status / progress of the player in the campaign |
+
+PlayerController
+| Method   | Path        | Description                                    |
+| -------- | ----------- | ---------------------------------------------- |
+| **POST** | `/register` | Register a new player                          |
+| **POST** | `/login`    | Authenticate player and retrieve token         |
+
+CampaignController
+| Method     | Path            | Description                                                |
+| ---------- | --------------- | ---------------------------------------------------------- |
+| **GET**    | `/all`          | List all campaigns (supports query filters and pagination) |
+| **GET**    | `/{campaignId}` | Get details of a specific campaign                         |
+| **POST**   | `/create`       | Create a new campaign                                      |
+| **PUT**    | `/{campaignId}` | Update an existing campaign                                |
+| **DELETE** | `/{campaignId}` | Delete a campaign                                          |
+| **POST**   | `/{campaignId}` | Subscribe the current user/player to a campaign            |
 
