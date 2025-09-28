@@ -10,7 +10,16 @@ Unit tests cover spin logic, including concurrency.
 Getting Started
 
 1. Clone the repository: https://github.com/NikolaiAndrov/FreeSpinsGame.git
-2. Configure the database in appsettings.json
+2. Enable Automatic Package Restore
+This is the main setting to control automatic dependency installation.
+Go to the menu bar and select Tools > NuGet Package Manager > Package Manager Settings.
+In the Options dialog box, navigate to the NuGet Package Manager section.
+Under this section, ensure that the following two options are checked:
+Allow NuGet to download missing packages.
+Automatically check for missing packages during build in Visual Studio.
+3. Build solution.
+
+4. Configure the database in appsettings.json
 
 ```json
 {
