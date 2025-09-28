@@ -27,7 +27,6 @@ Getting Started
     "SignIn": {
       "RequireConfirmedAccount": false
     },
-
     "Password": {
       "RequireUppercase": false,
       "RequireLowercase": false,
@@ -44,6 +43,7 @@ Getting Started
     }
   }
 }
+
 
 3. Apply migrations.
 4. Run the API.
