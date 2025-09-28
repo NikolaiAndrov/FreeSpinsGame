@@ -19,7 +19,7 @@ Allow NuGet to download missing packages.
 Automatically check for missing packages during build in Visual Studio.
 3. Build solution.
 
-4. Configure the database in appsettings.json
+4. Provide database and other configurations in appsettings.json
 
 ```json
 {
