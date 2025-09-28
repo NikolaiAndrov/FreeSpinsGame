@@ -7,7 +7,7 @@ Optimistic concurrency handling using RowVersion.
 Supports pagination for reading campaigns.
 Unit tests cover spin logic, including concurrency.
 
-##Technology Stack Section
+## Technology Stack Section
 1. .NET 8 - The core framework
 2. ASP.NET Core Web API - For building the API
 3. Entity Framework Core - For data access and ORM
@@ -16,7 +16,7 @@ Unit tests cover spin logic, including concurrency.
 6. AutoMapper - For entity mapping
 7. JWT - For authentication and authorization
 
-Getting Started
+## Getting Started
 
 1. Clone the repository: https://github.com/NikolaiAndrov/FreeSpinsGame.git
 2. Enable Automatic Package Restore
