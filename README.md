@@ -1,5 +1,5 @@
 # Free Spins Game API
-A .NET 8 Web API for managing a promotional Free Spins Game. Players can spin during a limited-time campaign with a maximum number of spins per day. This project demonstrates clean CRUD, business logic, concurrency handling, and unit testing.
+A .NET 8 Web API for managing a promotional Free Spins Game. A player should subscribe to a campaign to be able to spin. Players can spin during a limited-time campaign with a maximum number of spins per day. This project demonstrates clean CRUD, business logic, concurrency handling, and unit testing.
 
 Players can spin a limited number of times per day per campaign.
 Tracks spin history with timestamps.
@@ -17,7 +17,6 @@ Unit tests cover spin logic, including concurrency.
 7. JWT - For authentication and authorization
 
 ## Getting Started
-
 1. Clone the repository: https://github.com/NikolaiAndrov/FreeSpinsGame.git
 2. Enable Automatic Package Restore
 This is the main setting to control automatic dependency installation.
@@ -70,3 +69,11 @@ Automatically check for missing packages during build in Visual Studio.
 7. Swagger UI should open automatically in the browser.
 8. Database is seeded with a bit of data.
 9. Test functionality:  CampaignId = 651d64a8-7378-4ee9-8916-776f2aa45d01, PlayerId = 151d64a8-7378-4ee9-8916-996f2aa45d01
+
+## API Endpoints
+
+| Method   | Path                                              | Description                                         |
+| -------- | ------------------------------------------------- | --------------------------------------------------- |
+| **POST** | `/campaigns/{campaignId}/players/{playerId}/spin` | Execute a spin action for a player in a campaign    |
+| **GET**  | `/campaigns/{campaignId}/players/{playerId}`      | Get status / progress of the player in the campaign |
+
