@@ -2,6 +2,7 @@
 using FreeSpinsGame.WebApi.DtoModels.Campaign;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
 
 namespace FreeSpinsGame.WebApi.Controllers
@@ -13,11 +14,13 @@ namespace FreeSpinsGame.WebApi.Controllers
     {
         private readonly ICampaignService campaignService;
         private readonly ILogger<CampaignController> logger;
+        private readonly IPlayerService playerService;
 
-        public CampaignController(ICampaignService campaignService, ILogger<CampaignController> logger)
+        public CampaignController(ICampaignService campaignService, ILogger<CampaignController> logger, IPlayerService playerService)
         {
             this.campaignService = campaignService;
             this.logger = logger;
+            this.playerService = playerService;
         }
 
         [HttpGet("all")]
@@ -128,6 +131,37 @@ namespace FreeSpinsGame.WebApi.Controllers
                 await this.campaignService.DeleteAsync(campaignId);
                 this.logger.LogInformation(OperationCompletedSuccessfully);
                 return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        [HttpPost("{campaignId:guid}")]
+        public async Task<IActionResult> Subscribe([FromRoute] Guid campaignId)
+        {
+            try
+            {
+                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+
+                if (!isExisting)
+                {
+                    return this.NotFound(CampaignNotFound);
+                }
+
+                string? playerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
+
+                if (isSubscribed)
+                {
+                    return this.Ok(PlayerAlreadySubscribed);
+                }
+
+                await this.campaignService.SubscribeAsync(campaignId, playerId);
+
+                return this.Ok(SuccessfulSubscription);
             }
             catch (Exception ex)
             {

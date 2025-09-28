@@ -1,10 +1,5 @@
 ﻿using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.WebApi.DtoModels.Campaign;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FreeSpinsGame.Services.Interfaces
 {
@@ -23,5 +18,7 @@ namespace FreeSpinsGame.Services.Interfaces
         Task<CampaignViewDto> UpdateCampaignAsync(Guid campaignId, CampaignUpdateDto updateCampaignDto);
 
         Task DeleteAsync(Guid campaignId);
+
+        Task SubscribeAsync(Guid campaignId, string playerId);
     }
 }

@@ -18,6 +18,8 @@
         public const string PlayerNotFound = "The player with these credentials is not existing.";
         public const string CampaignNotFound = "The campaign is no longer available.";
         public const string PlayerNotSubscribed = "Player does not have subscription for this campaign.";
+        public const string PlayerAlreadySubscribed = "Player already has subscription for this campaign.";
+        public const string SuccessfulSubscription = "The subscription was successful.";
 
         public const string AllSpinsExhausted = "You already have exhausted all of your daily spin attempts.";
         public const string RemainingSpinsCount = "Your remaining daily spins count";
