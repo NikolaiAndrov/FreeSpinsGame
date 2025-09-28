@@ -11,7 +11,8 @@ Getting Started
 
 1. Clone the repository: https://github.com/NikolaiAndrov/FreeSpinsGame.git
 2. Configure the database in appsettings.json
-   
+
+```json
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=<YOUR CONNECTION STRING>"
@@ -27,6 +28,7 @@ Getting Started
     "SignIn": {
       "RequireConfirmedAccount": false
     },
+
     "Password": {
       "RequireUppercase": false,
       "RequireLowercase": false,
@@ -43,7 +45,7 @@ Getting Started
     }
   }
 }
-
+```
 
 3. Apply migrations.
 4. Run the API.
