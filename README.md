@@ -7,6 +7,12 @@ Optimistic concurrency handling using RowVersion.
 Supports pagination for reading campaigns.
 Unit tests cover spin logic, including concurrency.
 
+Technology Stack Section
+.NET 8 - The core framework
+ASP.NET Core Web API - For building the API
+Entity Framework Core - For data access and ORM
+SQL Server - The database
+
 Getting Started
 
 1. Clone the repository: https://github.com/NikolaiAndrov/FreeSpinsGame.git
