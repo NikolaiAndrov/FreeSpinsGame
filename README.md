@@ -7,14 +7,14 @@ Optimistic concurrency handling using RowVersion.
 Supports pagination for reading campaigns.
 Unit tests cover spin logic, including concurrency.
 
-Technology Stack Section
-.NET 8 - The core framework
-ASP.NET Core Web API - For building the API
-Entity Framework Core - For data access and ORM
-SQL Server - The database
-NUnit and InMemory database - For unit testing
-AutoMapper - For entity mapping
-JWT - For authentication and authorization
+##Technology Stack Section
+1. .NET 8 - The core framework
+2. ASP.NET Core Web API - For building the API
+3. Entity Framework Core - For data access and ORM
+4. SQL Server - The database
+5. NUnit and InMemory database - For unit testing
+6. AutoMapper - For entity mapping
+7. JWT - For authentication and authorization
 
 Getting Started
 
