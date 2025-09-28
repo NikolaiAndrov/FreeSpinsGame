@@ -30,7 +30,7 @@ namespace FreeSpinsGame.Services
         public async Task DeleteAsync(Guid campaignId)
         {
             Campaign campaign = await this.GetCampaignByIdAsync(campaignId);
-            this.dbContext.Remove(campaign);
+            campaign.IsActive = false;
             await this.dbContext.SaveChangesAsync();
         }
 
