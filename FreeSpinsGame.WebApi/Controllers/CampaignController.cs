@@ -80,7 +80,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             {
                 CampaignViewDto newCampaign = await this.campaignService.CreateCampaignAsync(createCampaignDto);
                 this.logger.LogInformation(OperationCompletedSuccessfully);
-                return CreatedAtAction(nameof(this.GetById), new { id = newCampaign.CampaignId }, newCampaign);
+                return CreatedAtAction(nameof(this.GetById), new { campaignId = newCampaign.CampaignId }, newCampaign);
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
-        [HttpPost("{campaignId:guid}")]
+        [HttpPost("{campaignId:guid}/subscribe")]
         public async Task<IActionResult> Subscribe([FromRoute] Guid campaignId)
         {
             try
