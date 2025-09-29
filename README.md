@@ -85,12 +85,12 @@ PlayerController
 | **POST** | `/login`    | Authenticate player and retrieve token         |
 
 CampaignController
-| Method     | Path            | Description                                                |
-| ---------- | --------------- | ---------------------------------------------------------- |
-| **GET**    | `/all`          | List all campaigns (supports query filters and pagination) |
-| **GET**    | `/{campaignId}` | Get details of a specific campaign                         |
-| **POST**   | `/create`       | Create a new campaign                                      |
-| **PUT**    | `/{campaignId}` | Update an existing campaign                                |
-| **DELETE** | `/{campaignId}` | Delete a campaign                                          |
-| **POST**   | `/{campaignId}` | Subscribe the current user/player to a campaign            |
+| Method     | Path                      | Description                                                |
+| ---------- | ------------------------- | ---------------------------------------------------------- |
+| **GET**    | `/all`                    | List all campaigns (supports query filters and pagination) |
+| **GET**    | `/{campaignId}`           | Get details of a specific campaign                         |
+| **POST**   | `/create`                 | Create a new campaign                                      |
+| **PUT**    | `/{campaignId}`           | Update an existing campaign                                |
+| **DELETE** | `/{campaignId}`           | Delete a campaign                                          |
+| **POST**   | `/{campaignId}/subscribe` | Subscribe the current user/player to a campaign            |
 
