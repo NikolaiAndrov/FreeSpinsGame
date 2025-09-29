@@ -80,7 +80,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             {
                 CampaignViewDto newCampaign = await this.campaignService.CreateCampaignAsync(createCampaignDto);
                 this.logger.LogInformation(OperationCompletedSuccessfully);
-                return CreatedAtAction(nameof(this.GetById), new { campaignId = newCampaign.CampaignId }, newCampaign);
+                return this.CreatedAtAction(nameof(this.GetById), new { campaignId = newCampaign.CampaignId }, newCampaign);
             }
             catch (Exception ex)
             {
