@@ -10,6 +10,7 @@ using System.Text;
 using FreeSpinsGame.Services.Interfaces;
 using FreeSpinsGame.Services;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 
 namespace FreeSpinsGame.WebApi
 {
@@ -81,6 +82,7 @@ namespace FreeSpinsGame.WebApi
                     ValidateAudience = true,
                     ValidAudience = builder.Configuration["JWT:Audience"],
                     ValidateIssuerSigningKey = true,
+                    RoleClaimType = ClaimTypes.Role,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]!))
                 };
             });

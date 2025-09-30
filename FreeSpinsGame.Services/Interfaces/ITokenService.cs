@@ -3,6 +3,6 @@ namespace FreeSpinsGame.Services.Interfaces
 {
     public interface ITokenService
     {
-        public string CreateToken(Player player);
+        public Task<string> CreateToken(Player player);
     }
 }

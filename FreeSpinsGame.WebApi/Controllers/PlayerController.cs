@@ -69,7 +69,7 @@ namespace FreeSpinsGame.WebApi.Controllers
                 }
 
                 NewPlayerDto newPlayer = this.mapper.Map<NewPlayerDto>(player);
-                newPlayer.Token = this.tokenService.CreateToken(player);
+                newPlayer.Token = await this.tokenService.CreateToken(player);
 
                 this.logger.LogInformation(UserRegisteredSuccessfully);
                 return this.Created(string.Empty ,newPlayer);
@@ -105,7 +105,7 @@ namespace FreeSpinsGame.WebApi.Controllers
                 }
 
                 NewPlayerDto newPlayerDto = this.mapper.Map<NewPlayerDto>(player);
-                newPlayerDto.Token = this.tokenService.CreateToken(player);
+                newPlayerDto.Token = await this.tokenService.CreateToken(player);
                 return this.Ok(newPlayerDto);
             }
             catch (Exception ex)

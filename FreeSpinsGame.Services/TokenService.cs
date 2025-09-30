@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FreeSpinsGame.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FreeSpinsGame.Services
 {
@@ -13,14 +14,16 @@ namespace FreeSpinsGame.Services
     {
         private readonly IConfiguration configuration;
         private readonly SymmetricSecurityKey securityKey;
-
-        public TokenService(IConfiguration configuration)
+        private readonly UserManager<Player> userManager;
+           
+        public TokenService(IConfiguration configuration, UserManager<Player> userManager)
         {
             this.configuration = configuration;
             this.securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SigningKey"]!));
+            this.userManager = userManager;
         }
 
-        public string CreateToken(Player player)
+        public async Task<string> CreateToken(Player player)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -30,6 +33,9 @@ namespace FreeSpinsGame.Services
             };
 
             var credentials = new SigningCredentials(this.securityKey, SecurityAlgorithms.HmacSha512Signature);
+
+            IEnumerable<string> roles = await this.userManager.GetRolesAsync(player);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
