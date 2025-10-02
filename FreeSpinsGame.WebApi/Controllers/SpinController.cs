@@ -1,6 +1,7 @@
 ﻿using FreeSpinsGame.Data.Models;
 using FreeSpinsGame.Services.Interfaces;
 using FreeSpinsGame.WebApi.DtoModels.Spin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using static FreeSpinsGame.Common.GeneralApplicationMessages;
 
 namespace FreeSpinsGame.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SpinController : Controller
