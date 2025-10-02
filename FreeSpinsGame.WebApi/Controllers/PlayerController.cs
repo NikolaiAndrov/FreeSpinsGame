@@ -21,15 +21,17 @@ namespace FreeSpinsGame.WebApi.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<PlayerController> logger;
         private readonly ITokenService tokenService;
+        private readonly IPlayerService playerService;
 
         public PlayerController(UserManager<Player> userManager, SignInManager<Player> signInManager, 
-            IMapper mapper, ILogger<PlayerController> logger, ITokenService tokenService)
+            IMapper mapper, ILogger<PlayerController> logger, ITokenService tokenService, IPlayerService playerService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.logger = logger;
             this.tokenService = tokenService;
+            this.playerService = playerService;
         }
 
         [HttpPost("register")]
@@ -107,6 +109,43 @@ namespace FreeSpinsGame.WebApi.Controllers
                 NewPlayerDto newPlayerDto = this.mapper.Map<NewPlayerDto>(player);
                 newPlayerDto.Token = await this.tokenService.CreateToken(player);
                 return this.Ok(newPlayerDto);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            }
+        }
+
+        [Authorize(Roles = AdminRoleName)]
+        [HttpPost("{id}/assignadmin")]
+        public async Task<IActionResult> AssignAdmin([FromRoute] string id)
+        {
+            try
+            {
+                bool isExisting = await this.playerService.IsPlayerExistingByIdAsync(id);
+
+                if (!isExisting)
+                {
+                    return this.NotFound();
+                }
+
+                Player? player = await this.userManager.FindByIdAsync(id);
+
+                if (player == null)
+                {
+                    return this.NotFound();
+                }
+
+                bool isAdmin = await this.userManager.IsInRoleAsync(player, AdminRoleName);
+
+                if (isAdmin)
+                {
+                    return this.BadRequest();
+                }
+
+                await this.userManager.AddToRoleAsync(player, AdminRoleName);
+                return this.Ok();
             }
             catch (Exception ex)
             {
