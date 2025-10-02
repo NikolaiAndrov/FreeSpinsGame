@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static FreeSpinsGame.Common.GeneralApplicationMessages;
+using static FreeSpinsGame.Common.GeneralApplicationConstants;
 
 namespace FreeSpinsGame.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class CampaignController : ControllerBase
     {
         private readonly ICampaignService campaignService;
@@ -24,7 +24,6 @@ namespace FreeSpinsGame.WebApi.Controllers
         }
 
         [HttpGet("all")]
-        [AllowAnonymous]
         public async Task<IActionResult> All([FromQuery] CampaignQueryDto campaignQueryModel)
         {
             try
@@ -46,7 +45,6 @@ namespace FreeSpinsGame.WebApi.Controllers
         }
 
         [HttpGet("{campaignId:guid}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById([FromRoute] Guid campaignId)
         {
             try
@@ -69,6 +67,7 @@ namespace FreeSpinsGame.WebApi.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = AdminRoleName)]
         public async Task<IActionResult> Create([FromBody] CampaignCreateDto createCampaignDto)
         {
             if (!this.ModelState.IsValid)
@@ -88,6 +87,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = AdminRoleName)]
         [HttpPut("{campaignId:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid campaignId, [FromBody] CampaignUpdateDto campaignUpdateDto)
         {
@@ -116,6 +116,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
+        [Authorize(Roles = AdminRoleName)]
         [HttpDelete("{campaignId:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid campaignId)
         {
@@ -138,6 +139,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("{campaignId:guid}/subscribe")]
         public async Task<IActionResult> Subscribe([FromRoute] Guid campaignId)
         {
