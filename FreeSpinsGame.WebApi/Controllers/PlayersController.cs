@@ -12,19 +12,19 @@ using FreeSpinsGame.WebApi.DtoModels.Player;
 
 namespace FreeSpinsGame.WebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class PlayerController : ControllerBase
+    [Route("api/[controller]")]
+    public class PlayersController : ControllerBase
     {
         private readonly UserManager<Player> userManager;
         private readonly SignInManager<Player> signInManager;
         private readonly IMapper mapper;
-        private readonly ILogger<PlayerController> logger;
+        private readonly ILogger<PlayersController> logger;
         private readonly ITokenService tokenService;
         private readonly IPlayerService playerService;
 
-        public PlayerController(UserManager<Player> userManager, SignInManager<Player> signInManager, 
-            IMapper mapper, ILogger<PlayerController> logger, ITokenService tokenService, IPlayerService playerService)
+        public PlayersController(UserManager<Player> userManager, SignInManager<Player> signInManager, 
+            IMapper mapper, ILogger<PlayersController> logger, ITokenService tokenService, IPlayerService playerService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
