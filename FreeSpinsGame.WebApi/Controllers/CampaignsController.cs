@@ -10,20 +10,20 @@ namespace FreeSpinsGame.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CampaignController : ControllerBase
+    public class CampaignsController : ControllerBase
     {
         private readonly ICampaignService campaignService;
-        private readonly ILogger<CampaignController> logger;
+        private readonly ILogger<CampaignsController> logger;
         private readonly IPlayerService playerService;
 
-        public CampaignController(ICampaignService campaignService, ILogger<CampaignController> logger, IPlayerService playerService)
+        public CampaignsController(ICampaignService campaignService, ILogger<CampaignsController> logger, IPlayerService playerService)
         {
             this.campaignService = campaignService;
             this.logger = logger;
             this.playerService = playerService;
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<IActionResult> All([FromQuery] CampaignQueryDto campaignQueryModel)
         {
             try
@@ -66,7 +66,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         [Authorize(Roles = AdminRoleName)]
         public async Task<IActionResult> Create([FromBody] CampaignCreateDto createCampaignDto)
         {
