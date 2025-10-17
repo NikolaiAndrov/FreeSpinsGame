@@ -11,15 +11,15 @@ namespace FreeSpinsGame.WebApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
-    public class SpinController : Controller
+    [Route("api")]
+    public class SpinsController : Controller
     {
         private readonly IPlayerService playerService;
         private readonly ICampaignService campaignService;
         private readonly ISpinService spinService;
-        private readonly ILogger<SpinController> logger;
+        private readonly ILogger<SpinsController> logger;
 
-        public SpinController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService, ILogger<SpinController> logger)
+        public SpinsController(IPlayerService playerService, ICampaignService campaignService, ISpinService spinService, ILogger<SpinsController> logger)
         {
             this.playerService = playerService;
             this.campaignService = campaignService;
@@ -69,7 +69,7 @@ namespace FreeSpinsGame.WebApi.Controllers
             }
         }
 
-        [HttpGet("campaigns/{campaignId}/players/{playerId}")]
+        [HttpGet("campaigns/{campaignId}/players/{playerId}/status")]
         public async Task<IActionResult> Status(Guid campaignId, string playerId)
         {
             try
