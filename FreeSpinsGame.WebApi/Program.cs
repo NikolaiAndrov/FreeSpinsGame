@@ -11,6 +11,7 @@ using FreeSpinsGame.Services.Interfaces;
 using FreeSpinsGame.Services;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
+using FreeSpinsGame.WebApi.Middlewares;
 
 namespace FreeSpinsGame.WebApi
 {
@@ -123,6 +124,8 @@ namespace FreeSpinsGame.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<GlobalExeptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
