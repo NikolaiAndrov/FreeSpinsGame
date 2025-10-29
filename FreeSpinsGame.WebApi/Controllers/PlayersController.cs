@@ -23,7 +23,7 @@ namespace FreeSpinsGame.WebApi.Controllers
         private readonly ITokenService tokenService;
         private readonly IPlayerService playerService;
 
-        public PlayersController(UserManager<Player> userManager, SignInManager<Player> signInManager, 
+        public PlayersController(UserManager<Player> userManager, SignInManager<Player> signInManager,
             IMapper mapper, ILogger<PlayersController> logger, ITokenService tokenService, IPlayerService playerService)
         {
             this.userManager = userManager;
@@ -37,121 +37,97 @@ namespace FreeSpinsGame.WebApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterPlayerDto registerPlayerDto)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                if (!this.ModelState.IsValid)
-                {
-                    return this.BadRequest(this.ModelState);
-                }
-
-                Player player = this.mapper.Map<Player>(registerPlayerDto);
-
-                IdentityResult playerCreated = await this.userManager.CreateAsync(player, registerPlayerDto.Password);
-
-                if (!playerCreated.Succeeded)
-                {
-                    foreach (IdentityError error in playerCreated.Errors)
-                    {
-                        this.ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
-                    return this.BadRequest(this.ModelState);
-                }
-
-                IdentityResult roleResult = await this.userManager.AddToRoleAsync(player, UserRoleName);
-
-                if (!roleResult.Succeeded)
-                {
-                    foreach (IdentityError error in roleResult.Errors)
-                    {
-                        this.ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
-                    return this.BadRequest(this.ModelState);
-                }
-
-                NewPlayerDto newPlayer = this.mapper.Map<NewPlayerDto>(player);
-                newPlayer.Token = await this.tokenService.CreateToken(player);
-
-                this.logger.LogInformation(UserRegisteredSuccessfully);
-                return this.Created(string.Empty ,newPlayer);
+                return this.BadRequest(this.ModelState);
             }
-            catch (Exception ex)
+
+            Player player = this.mapper.Map<Player>(registerPlayerDto);
+
+            IdentityResult playerCreated = await this.userManager.CreateAsync(player, registerPlayerDto.Password);
+
+            if (!playerCreated.Succeeded)
             {
-                this.logger.LogError(ex.Message);
-                return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                foreach (IdentityError error in playerCreated.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return this.BadRequest(this.ModelState);
             }
+
+            IdentityResult roleResult = await this.userManager.AddToRoleAsync(player, UserRoleName);
+
+            if (!roleResult.Succeeded)
+            {
+                foreach (IdentityError error in roleResult.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return this.BadRequest(this.ModelState);
+            }
+
+            NewPlayerDto newPlayer = this.mapper.Map<NewPlayerDto>(player);
+            newPlayer.Token = await this.tokenService.CreateToken(player);
+
+            this.logger.LogInformation(UserRegisteredSuccessfully);
+            return this.Created(string.Empty, newPlayer);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginPlayerDto playerLoginDto) 
+        public async Task<IActionResult> Login([FromBody] LoginPlayerDto playerLoginDto)
         {
-            try
+            if (!this.ModelState.IsValid)
             {
-                if (!this.ModelState.IsValid)
-                {
-                    return this.BadRequest(this.ModelState);
-                }
-
-                Player? player = await this.userManager.FindByEmailAsync(playerLoginDto.Email);
-
-                if (player == null)
-                {
-                    return this.Unauthorized(InvalidEmailOrPassword);
-                }
-                var result = await this.signInManager.CheckPasswordSignInAsync(player, playerLoginDto.Password, false);
-
-                if (!result.Succeeded)
-                {
-                    return this.Unauthorized(InvalidEmailOrPassword);
-                }
-
-                NewPlayerDto newPlayerDto = this.mapper.Map<NewPlayerDto>(player);
-                newPlayerDto.Token = await this.tokenService.CreateToken(player);
-                return this.Ok(newPlayerDto);
+                return this.BadRequest(this.ModelState);
             }
-            catch (Exception ex)
+
+            Player? player = await this.userManager.FindByEmailAsync(playerLoginDto.Email);
+
+            if (player == null)
             {
-                this.logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.Unauthorized(InvalidEmailOrPassword);
             }
+            var result = await this.signInManager.CheckPasswordSignInAsync(player, playerLoginDto.Password, false);
+
+            if (!result.Succeeded)
+            {
+                return this.Unauthorized(InvalidEmailOrPassword);
+            }
+
+            NewPlayerDto newPlayerDto = this.mapper.Map<NewPlayerDto>(player);
+            newPlayerDto.Token = await this.tokenService.CreateToken(player);
+            return this.Ok(newPlayerDto);
         }
 
         [Authorize(Roles = AdminRoleName)]
         [HttpPost("{id}/assignadmin")]
         public async Task<IActionResult> AssignAdmin([FromRoute] string id)
         {
-            try
+            bool isExisting = await this.playerService.IsPlayerExistingByIdAsync(id);
+
+            if (!isExisting)
             {
-                bool isExisting = await this.playerService.IsPlayerExistingByIdAsync(id);
-
-                if (!isExisting)
-                {
-                    return this.NotFound();
-                }
-
-                Player? player = await this.userManager.FindByIdAsync(id);
-
-                if (player == null)
-                {
-                    return this.NotFound();
-                }
-
-                bool isAdmin = await this.userManager.IsInRoleAsync(player, AdminRoleName);
-
-                if (isAdmin)
-                {
-                    return this.BadRequest();
-                }
-
-                await this.userManager.AddToRoleAsync(player, AdminRoleName);
-                return this.Ok();
+                return this.NotFound();
             }
-            catch (Exception ex)
+
+            Player? player = await this.userManager.FindByIdAsync(id);
+
+            if (player == null)
             {
-                this.logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+                return this.NotFound();
             }
+
+            bool isAdmin = await this.userManager.IsInRoleAsync(player, AdminRoleName);
+
+            if (isAdmin)
+            {
+                return this.BadRequest();
+            }
+
+            await this.userManager.AddToRoleAsync(player, AdminRoleName);
+            return this.Ok();
         }
     }
 }
