@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 using static FreeSpinsGame.Common.ExceptionMessages;
@@ -52,6 +53,7 @@ namespace FreeSpinsGame.WebApi.Middlewares
                 ArgumentException => (int)HttpStatusCode.BadRequest,
                 KeyNotFoundException => (int)HttpStatusCode.NotFound,
                 UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+                DbUpdateConcurrencyException => (int)HttpStatusCode.Conflict,
                 _ => (int)HttpStatusCode.InternalServerError
             };
         }
@@ -63,6 +65,7 @@ namespace FreeSpinsGame.WebApi.Middlewares
                 ArgumentException => BadRequestMessage,
                 KeyNotFoundException => NotFoundMessage,
                 UnauthorizedAccessException => UnauthorizedMessage,
+                DbUpdateConcurrencyException => DbUpdateConcurrencyMessage,
                 _ => InternalServerErrorMessage
             };
         }
