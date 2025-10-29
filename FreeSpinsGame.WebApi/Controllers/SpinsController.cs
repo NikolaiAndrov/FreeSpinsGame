@@ -69,3 +69,4 @@ namespace FreeSpinsGame.WebApi.Controllers
             return this.Ok(spinStatusDto);
         }
     }
+}
