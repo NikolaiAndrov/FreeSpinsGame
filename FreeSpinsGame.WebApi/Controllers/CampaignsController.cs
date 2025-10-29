@@ -26,44 +26,30 @@ namespace FreeSpinsGame.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] CampaignQueryDto campaignQueryModel)
         {
-            try
-            {
-                IEnumerable<CampaignViewDto> campaigns = await this.campaignService.GetAllAsync(campaignQueryModel);
+            IEnumerable<CampaignViewDto> campaigns = await this.campaignService.GetAllAsync(campaignQueryModel);
 
-                if (!campaigns.Any())
-                {
-                    return this.NoContent();
-                }
-
-                this.logger.LogInformation(GetAllCampaignsSuccessfully);
-                return this.Ok(campaigns);
-            }
-            catch (Exception ex)
+            if (!campaigns.Any())
             {
-                return this.HandleException(ex);
+                return this.NoContent();
             }
+
+            this.logger.LogInformation(GetAllCampaignsSuccessfully);
+            return this.Ok(campaigns);
         }
 
         [HttpGet("{campaignId:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid campaignId)
         {
-            try
-            {
-                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+            bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
 
-                if (!isExisting)
-                {
-                    return this.NotFound();
-                }
-
-                CampaignViewDto campaignViewDto = await this.campaignService.GetCampaignViewDtoByIdAsync(campaignId);
-                this.logger.LogInformation(OperationCompletedSuccessfully);
-                return this.Ok(campaignViewDto);
-            }
-            catch (Exception ex)
+            if (!isExisting)
             {
-                return this.HandleException(ex);
+                return this.NotFound();
             }
+
+            CampaignViewDto campaignViewDto = await this.campaignService.GetCampaignViewDtoByIdAsync(campaignId);
+            this.logger.LogInformation(OperationCompletedSuccessfully);
+            return this.Ok(campaignViewDto);
         }
 
         [HttpPost]
@@ -75,16 +61,9 @@ namespace FreeSpinsGame.WebApi.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            try
-            {
-                CampaignViewDto newCampaign = await this.campaignService.CreateCampaignAsync(createCampaignDto);
-                this.logger.LogInformation(OperationCompletedSuccessfully);
-                return this.CreatedAtAction(nameof(this.GetById), new { campaignId = newCampaign.CampaignId }, newCampaign);
-            }
-            catch (Exception ex)
-            {
-                return this.HandleException(ex);
-            }
+            CampaignViewDto newCampaign = await this.campaignService.CreateCampaignAsync(createCampaignDto);
+            this.logger.LogInformation(OperationCompletedSuccessfully);
+            return this.CreatedAtAction(nameof(this.GetById), new { campaignId = newCampaign.CampaignId }, newCampaign);
         }
 
         [Authorize(Roles = AdminRoleName)]
@@ -96,94 +75,66 @@ namespace FreeSpinsGame.WebApi.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            try
+            bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+
+            if (!isExisting)
             {
-                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
-
-                if (!isExisting)
-                {
-                    return this.NotFound();
-                }
-
-                CampaignViewDto campaign = await this.campaignService.UpdateCampaignAsync(campaignId, campaignUpdateDto);
-                this.logger.LogInformation(OperationCompletedSuccessfully);
-
-                return this.Ok(campaign);
+                return this.NotFound();
             }
-            catch (Exception ex)
-            {
-                return this.HandleException(ex);
-            }
+
+            CampaignViewDto campaign = await this.campaignService.UpdateCampaignAsync(campaignId, campaignUpdateDto);
+            this.logger.LogInformation(OperationCompletedSuccessfully);
+
+            return this.Ok(campaign);
         }
 
         [Authorize(Roles = AdminRoleName)]
         [HttpDelete("{campaignId:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid campaignId)
         {
-            try
-            {
-                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+            bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
 
-                if (!isExisting)
-                {
-                    return this.NotFound();
-                }
-
-                await this.campaignService.DeleteAsync(campaignId);
-                this.logger.LogInformation(OperationCompletedSuccessfully);
-                return this.NoContent();
-            }
-            catch (Exception ex)
+            if (!isExisting)
             {
-                return this.HandleException(ex);
+                return this.NotFound();
             }
+
+            await this.campaignService.DeleteAsync(campaignId);
+            this.logger.LogInformation(OperationCompletedSuccessfully);
+            return this.NoContent();
         }
 
         [Authorize]
         [HttpPost("{campaignId:guid}/subscribe")]
         public async Task<IActionResult> Subscribe([FromRoute] Guid campaignId)
         {
-            try
+            bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
+
+            if (!isExisting)
             {
-                bool isExisting = await this.campaignService.IsCampaignExistingByIdAsync(campaignId);
-
-                if (!isExisting)
-                {
-                    this.logger.LogInformation($"{CampaignNotFound} id {campaignId}");
-                    return this.NotFound(CampaignNotFound);
-                }
-
-                string? playerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                if (playerId == null)
-                {
-                    return this.BadRequest();
-                }
-
-                bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
-
-                if (isSubscribed)
-                {
-                    this.logger.LogInformation($"{PlayerAlreadySubscribed} {campaignId}");
-                    return this.Ok(PlayerAlreadySubscribed);
-                }
-
-                await this.campaignService.SubscribeAsync(campaignId, playerId);
-
-                this.logger.LogInformation($"{SuccessfulSubscription} player id {playerId}, campaign id {campaignId}");
-                return this.Ok(SuccessfulSubscription);
+                this.logger.LogInformation($"{CampaignNotFound} id {campaignId}");
+                return this.NotFound(CampaignNotFound);
             }
-            catch (Exception ex)
+
+            string? playerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (playerId == null)
             {
-                this.logger.LogError(ex, UnexpectedErrorMessage);
-                return this.HandleException(ex);
+                return this.BadRequest();
             }
-        }
 
-        private IActionResult HandleException(Exception ex)
-        {
-            this.logger.LogError(ex, UnexpectedErrorMessage);
-            return this.StatusCode(StatusCodes.Status500InternalServerError, UnexpectedErrorMessage);
+            bool isSubscribed = await this.playerService.IsPlayerSubscribedToCampaignAsync(playerId, campaignId);
+
+            if (isSubscribed)
+            {
+                this.logger.LogInformation($"{PlayerAlreadySubscribed} {campaignId}");
+                return this.Ok(PlayerAlreadySubscribed);
+            }
+
+            await this.campaignService.SubscribeAsync(campaignId, playerId);
+
+            this.logger.LogInformation($"{SuccessfulSubscription} player id {playerId}, campaign id {campaignId}");
+            return this.Ok(SuccessfulSubscription);
         }
     }
 }
